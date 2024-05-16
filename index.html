@@ -90,6 +90,30 @@
             margin-top: 20px;
             color: #6c757d;
         }
+        .nota {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            background-color: #ffffff;
+        }
+        .bayar-btn {
+            display: block;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 15px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+        .bayar-btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -161,6 +185,8 @@
         <div class="footer">
             <h2>TERIMA KASIH KEPADA KONSUMEN RESTAURANT GEMINI!! SEMOGA MEMUASKAN :)</h2>
         </div>
+        <div id="nota" class="nota" style="display: none;"></div>
+        <button class="bayar-btn" onclick="bayar()">Bayar</button>
     </div>
     <script>
         document.getElementById('pesanForm').addEventListener('submit', function(event) {
@@ -176,9 +202,57 @@
             // Simpan data ke localStorage sebagai simulasi pengiriman
             localStorage.setItem('pesananTerakhir', JSON.stringify(data));
 
-            alert('Pesanan Anda berhasil dikirim!'); // Menampilkan pesan sukses
-            location.reload(); // Memuat ulang halaman setelah pesan berhasil dikirim
+            // Menampilkan nota
+            tampilkanNota(data);
+
+            alert('Pesanan Anda berhasil dikirim silahkan bayar dibawah'); // Menampilkan pesan sukses
+            // location.reload(); // Memuat ulang halaman setelah pesan berhasil dikirim
         });
+
+        function tampilkanNota(data) {
+            const hargaMakanan = {
+                'Nasi Goreng': 20000,
+                'Mie Ayam': 15000,
+                'Ayam Penyet': 25000,
+                'Ayam Bakar': 25000,
+                'Mie Goreng': 20000,
+                'Mie Rebus': 10000,
+                'Kwetiaw Siram': 20000
+            };
+
+            const hargaMinuman = {
+                'Teh Obeng': 5000,
+                'Teh O': 5000,
+                'Jeruk Dingin': 7000,
+                'Jeruk Panas': 7000,
+                'Jus Alpukat': 15000,
+                'Jus Wortel': 15000,
+                'Sanford': 5000
+            };
+
+            var notaDiv = document.getElementById('nota');
+            var totalHarga = (hargaMakanan[data.makanan] * data.jumlah_makanan) + (hargaMinuman[data.minuman] * data.jumlah_minuman);
+
+            notaDiv.innerHTML = `
+                <h2>Nota Pesanan</h2>
+                <p><strong>Nama:</strong> ${data.nama}</p>
+                <p><strong>No. Hp:</strong> ${data.no_hp}</p>
+                <p><strong>Email:</strong> ${data.email}</p>
+                <p><strong>Alamat Pengiriman:</strong> ${data.alamat_pengiriman}</p>
+                <p><strong>Makanan:</strong> ${data.makanan} x ${data.jumlah_makanan} (Rp ${hargaMakanan[data.makanan]})</p>
+                <p><strong>Minuman:</strong> ${data.minuman} x ${data.jumlah_minuman} (Rp ${hargaMinuman[data.minuman]})</p>
+                <p><strong>Keterangan Pesanan:</strong> ${data.keterangan_pesanan}</p>
+                <p><strong>Metode Pembayaran:</strong> ${data.pembayaran}</p>
+                <p><strong>Total Harga:</strong> Rp ${totalHarga}</p>
+            `;
+            notaDiv.style.display = 'block';
+        }
+
+        function bayar() {
+        // Logika pembayaran dapat ditambahkan di sini
+        alert('Terima kasih! Pembayaran Anda telah diterima.');
+        location.reload(); // Memuat ulang halaman setelah pembayaran
+    }
 
         // Jika ingin menampilkan pesanan terakhir
         document.addEventListener('DOMContentLoaded', function() {
