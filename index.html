@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesan Makanan dengan GoFood</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f8f9fa; /* Warna latar belakang */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 90%;
+            max-width: 700px;
+            margin: 20px;
+            padding: 20px;
+            background-color: #ffffff; /* Warna latar konten */
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #218838; /* Warna judul */
+            margin-bottom: 20px;
+        }
+        p {
+            text-align: center;
+            color: #6c757d;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        ul li {
+            background-color: #f8f9fa;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            color: #495057;
+        }
+        form {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #495057; /* Warna teks label */
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ced4da; /* Warna border input */
+            border-radius: 5px;
+            box-sizing: border-box;
+            background-color: #f8f9fa;
+            font-size: 16px;
+        }
+        input[type="submit"] {
+            background-color: #28a745; /* Warna tombol submit */
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #218838; /* Warna saat tombol submit dihover */
+        }
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Selamat Datang di RESTAURANT GEMINI- (GoFood)!</h1>
+        <p>Silakan pilih makanan yang ingin Anda pesan:</p>
+        <ul>
+            <li>Nasi Goreng - Rp 20.000</li>
+            <li>Mie Ayam - Rp 15.000</li>
+            <li>Ayam Penyet - Rp 25.000</li>
+            <li>Ayam Bakar - Rp 25.000</li>
+            <li>Mie Goreng - Rp 20.000</li>
+            <li>Mie Rebus - Rp 10.000</li>
+            <li>Kwetiaw Siram - Rp 20.000</li>
+        </ul>
+        <p>Silakan pilih minuman yang ingin Anda pesan:</p>
+        <ul>
+            <li>Teh Obeng - Rp 5.000</li>
+            <li>Teh O - Rp 5.000</li>
+            <li>Jeruk Dingin - Rp 7.000</li>
+            <li>Jeruk Panas - Rp 7.000</li>
+            <li>Jus Alpukat - Rp 15.000</li>
+            <li>Jus Wortel - Rp 15.000</li>
+            <li>Sanford - Rp 5.000</li>
+        </ul>
+        <form id="pesanForm">
+            <label for="nama">Nama:</label>
+            <input type="text" id="nama" name="nama" required><br>
+            <label for="no_hp">No.Hp:</label>
+            <input type="text" id="no_hp" name="no_hp" required><br>
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" required><br>
+            <label for="alamat_pengiriman">Alamat Pengiriman:</label>
+            <input type="text" id="alamat_pengiriman" name="alamat_pengiriman" required><br>
+            <label for="makanan">Pilih Makanan:</label>
+            <select id="makanan" name="makanan">
+                <option value="Nasi Goreng">Nasi Goreng</option>
+                <option value="Mie Ayam">Mie Ayam</option>
+                <option value="Ayam Penyet">Ayam Penyet</option>
+                <option value="Ayam Bakar">Ayam Bakar</option>
+                <option value="Mie Goreng">Mie Goreng</option>
+                <option value="Mie Rebus">Mie Rebus</option>
+                <option value="Kwetiaw Siram">Kwetiaw Siram</option>
+            </select><br>
+            <label for="jumlah_makanan">Jumlah Makanan:</label>
+            <input type="number" id="jumlah_makanan" name="jumlah_makanan" min="1" required><br>
+            <label for="minuman">Pilih Minuman:</label>
+            <select id="minuman" name="minuman">
+                <option value="Teh Obeng">Teh Obeng</option>
+                <option value="Teh O">Teh O</option>
+                <option value="Jeruk Dingin">Jeruk Dingin</option>
+                <option value="Jeruk Panas">Jeruk Panas</option>
+                <option value="Jus Alpukat">Jus Alpukat</option>
+                <option value="Jus Wortel">Jus Wortel</option>
+                <option value="Sanford">Sanford</option>
+            </select><br>
+            <label for="jumlah_minuman">Jumlah Minuman:</label>
+            <input type="number" id="jumlah_minuman" name="jumlah_minuman" min="1" required><br>
+            <label for="keterangan_pesanan">Keterangan Pesanan:</label>
+            <textarea id="keterangan_pesanan" name="keterangan_pesanan"></textarea><br>
+            <label for="pembayaran">Pilih Pembayaran:</label>
+            <select id="pembayaran" name="pembayaran">
+                <option value="Cash">Cash</option>
+                <option value="GoPay">GoPay</option>
+                <option value="Transfer Bank">Transfer Bank</option>
+            </select><br>
+            <input type="submit" value="Pesan">
+        </form>
+        <div class="footer">
+            <h2>TERIMA KASIH KEPADA KONSUMEN RESTAURANT GEMINI!! SEMOGA MEMUASKAN :)</h2>
+        </div>
+    </div>
+    <script>
+        document.getElementById('pesanForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Mencegah halaman di-refresh
+            var form = event.target;
+
+            var formData = new FormData(form);
+            var data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            // Simpan data ke localStorage sebagai simulasi pengiriman
+            localStorage.setItem('pesananTerakhir', JSON.stringify(data));
+
+            alert('Pesanan Anda berhasil dikirim!'); // Menampilkan pesan sukses
+            location.reload(); // Memuat ulang halaman setelah pesan berhasil dikirim
+        });
+
+        // Jika ingin menampilkan pesanan terakhir
+        document.addEventListener('DOMContentLoaded', function() {
+            var pesananTerakhir = localStorage.getItem('pesananTerakhir');
+            if (pesananTerakhir) {
+                console.log('Pesanan Terakhir:', JSON.parse(pesananTerakhir));
+            }
+        });
+    </script>
+</body>
+</html>
