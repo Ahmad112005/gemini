@@ -1,265 +1,456 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pesan Makanan dengan GoFood</title>
+    <title>Surat Maaf Bucin</title>
     <style>
         body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f8f9fa; /* Warna latar belakang */
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #f8e1f4;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             margin: 0;
-            padding: 0;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+        
+        .envelope {
+            position: relative;
+            width: 350px;
+            height: 230px;
+            background-color: #ff9ec6;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: all 0.5s ease;
+            z-index: 2;
+            margin-bottom: 30px;
+        }
+        
+        .envelope:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 0;
+            height: 0;
+            border-left: 175px solid transparent;
+            border-right: 175px solid transparent;
+            border-top: 115px solid #ff7eb8;
+            transform-origin: top;
+            transform: rotateX(0deg);
+            transition: all 0.5s ease;
+            z-index: 3;
+        }
+        
+        .envelope.open {
+            transform: translateY(-120px);
+        }
+        
+        .envelope.open:before {
+            transform: rotateX(180deg);
+        }
+        
+        .envelope:after {
+            content: '📩 Klik aku sayang!';
+            position: absolute;
+            bottom: 15px;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .letter {
+            position: absolute;
+            width: 320px;
+            height: 420px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-sizing: border-box;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.5s ease;
+            z-index: 1;
+            overflow: hidden;
+            opacity: 0;
+        }
+        
+        .letter.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            z-index: 4;
+        }
+        
+        .page {
+            position: absolute;
+            width: calc(100% - 40px);
+            height: calc(100% - 40px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(30px);
+            transition: all 0.5s ease;
+            padding: 10px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        
+        .page.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .page-photo {
+            width: 160px;
+            height: 160px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 5px solid #ff9ec6;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        
+        .page-text {
+            color: #555;
+            font-size: 17px;
+            margin-bottom: 15px;
+            line-height: 1.6;
+            width: 100%;
+            padding: 0 10px;
+            text-align: justify;
+            text-align-last: center;
+        }
+        
+        h1 {
+            color: #ff5e9a;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 24px;
+        }
+        
+        .hearts {
+            text-align: center;
+            font-size: 28px;
+            color: #ff5e9a;
+            margin: 20px 0;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        
+        .signature {
+            font-style: italic;
+            text-align: right;
+            margin-top: 25px;
+            color: #ff5e9a;
+            font-weight: bold;
+            width: 100%;
+            font-size: 16px;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            width: calc(100% - 40px);
+            margin-top: 20px;
+            position: absolute;
+            bottom: 25px;
+            left: 20px;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+        
+        .nav-btn {
+            background-color: #ff9ec6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+        
+        .nav-btn:hover {
+            background-color: #ff5e9a;
+            transform: scale(1.05);
+        }
+        
+        .nav-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .page-indicator {
+            text-align: center;
+            color: #ff5e9a;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        
+        .music-control {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: #ff9ec6;
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-        }
-        .container {
-            width: 90%;
-            max-width: 700px;
-            margin: 20px;
-            padding: 20px;
-            background-color: #ffffff; /* Warna latar konten */
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #218838; /* Warna judul */
-            margin-bottom: 20px;
-        }
-        p {
-            text-align: center;
-            color: #6c757d;
-        }
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 20px 0;
-        }
-        ul li {
-            background-color: #f8f9fa;
-            margin: 5px 0;
-            padding: 10px;
-            border-radius: 5px;
-            color: #495057;
-        }
-        form {
-            max-width: 100%;
-            margin: 0 auto;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #495057; /* Warna teks label */
-            font-weight: bold;
-        }
-        input[type="text"],
-        input[type="number"],
-        select,
-        textarea {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid #ced4da; /* Warna border input */
-            border-radius: 5px;
-            box-sizing: border-box;
-            background-color: #f8f9fa;
-            font-size: 16px;
-        }
-        input[type="submit"] {
-            background-color: #28a745; /* Warna tombol submit */
-            color: white;
-            padding: 15px 20px;
-            border: none;
-            border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
-        input[type="submit"]:hover {
-            background-color: #218838; /* Warna saat tombol submit dihover */
+        
+        .music-control.active {
+            opacity: 1;
         }
-        textarea {
-            height: 100px;
-            resize: vertical;
+        
+        .music-control i {
+            font-size: 22px;
         }
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            color: #6c757d;
+        
+        .love {
+            position: absolute;
+            pointer-events: none;
+            animation: float 4s ease-in-out infinite;
+            font-size: 20px;
+            color: #ff5e9a;
+            z-index: 100;
         }
-        .nota {
-            margin-top: 20px;
-            padding: 20px;
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-            background-color: #ffffff;
-        }
-        .bayar-btn {
-            display: block;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 15px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 20px;
-            width: 100%;
-            text-align: center;
-            transition: background-color 0.3s ease;
-        }
-        .bayar-btn:hover {
-            background-color: #0056b3;
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <h1>Selamat Datang di RESTAURANT GEMINI- (GoFood)!</h1>
-        <p>Silakan pilih makanan yang ingin Anda pesan:</p>
-        <ul>
-            <li>Nasi Goreng - Rp 20.000</li>
-            <li>Mie Ayam - Rp 15.000</li>
-            <li>Ayam Penyet - Rp 25.000</li>
-            <li>Ayam Bakar - Rp 25.000</li>
-            <li>Mie Goreng - Rp 20.000</li>
-            <li>Mie Rebus - Rp 10.000</li>
-            <li>Kwetiaw Siram - Rp 20.000</li>
-        </ul>
-        <p>Silakan pilih minuman yang ingin Anda pesan:</p>
-        <ul>
-            <li>Teh Obeng - Rp 5.000</li>
-            <li>Teh O - Rp 5.000</li>
-            <li>Jeruk Dingin - Rp 7.000</li>
-            <li>Jeruk Panas - Rp 7.000</li>
-            <li>Jus Alpukat - Rp 15.000</li>
-            <li>Jus Wortel - Rp 15.000</li>
-            <li>Sanford - Rp 5.000</li>
-        </ul>
-        <form id="pesanForm">
-            <label for="nama">Nama:</label>
-            <input type="text" id="nama" name="nama" required><br>
-            <label for="no_hp">No.Hp:</label>
-            <input type="text" id="no_hp" name="no_hp" required><br>
-            <label for="email">Email:</label>
-            <input type="text" id="email" name="email" required><br>
-            <label for="alamat_pengiriman">Alamat Pengiriman:</label>
-            <input type="text" id="alamat_pengiriman" name="alamat_pengiriman" required><br>
-            <label for="makanan">Pilih Makanan:</label>
-            <select id="makanan" name="makanan">
-                <option value="Nasi Goreng">Nasi Goreng</option>
-                <option value="Mie Ayam">Mie Ayam</option>
-                <option value="Ayam Penyet">Ayam Penyet</option>
-                <option value="Ayam Bakar">Ayam Bakar</option>
-                <option value="Mie Goreng">Mie Goreng</option>
-                <option value="Mie Rebus">Mie Rebus</option>
-                <option value="Kwetiaw Siram">Kwetiaw Siram</option>
-            </select><br>
-            <label for="jumlah_makanan">Jumlah Makanan:</label>
-            <input type="number" id="jumlah_makanan" name="jumlah_makanan" min="1" required><br>
-            <label for="minuman">Pilih Minuman:</label>
-            <select id="minuman" name="minuman">
-                <option value="Teh Obeng">Teh Obeng</option>
-                <option value="Teh O">Teh O</option>
-                <option value="Jeruk Dingin">Jeruk Dingin</option>
-                <option value="Jeruk Panas">Jeruk Panas</option>
-                <option value="Jus Alpukat">Jus Alpukat</option>
-                <option value="Jus Wortel">Jus Wortel</option>
-                <option value="Sanford">Sanford</option>
-            </select><br>
-            <label for="jumlah_minuman">Jumlah Minuman:</label>
-            <input type="number" id="jumlah_minuman" name="jumlah_minuman" min="1" required><br>
-            <label for="keterangan_pesanan">Keterangan Pesanan:</label>
-            <textarea id="keterangan_pesanan" name="keterangan_pesanan"></textarea><br>
-            <label for="pembayaran">Pilih Pembayaran:</label>
-            <select id="pembayaran" name="pembayaran">
-                <option value="Cash">Cash</option>
-                <option value="GoPay">GoPay</option>
-                <option value="Transfer Bank">Transfer Bank</option>
-            </select><br>
-            <input type="submit" value="Pesan">
-        </form>
-        <div class="footer">
-            <h2>TERIMA KASIH KEPADA KONSUMEN RESTAURANT GEMINI!! SEMOGA MEMUASKAN :)</h2>
+        <div class="envelope" id="envelope"></div>
+        
+        <div class="letter" id="letter">
+            <!-- Halaman judul -->
+            <div class="page" id="page-0">
+                <h1>Maafin Aku, Sayangku~</h1>
+                <img src="img/foto1.jpg" alt="Foto Kita" class="page-photo">
+                <div class="hearts">♥ ♥ ♥</div>
+            </div>
+            
+            <!-- Halaman-halaman konten -->
+            <div class="page" id="page-1">
+                <img src="img/foto2.jpg" alt="Foto Kita" class="page-photo">
+                <div class="page-text">Haii kamu yang bikin hari-hariku berwarna 🌈 Aku mau ngucapin sesuatu yang penting nih...</div>
+            </div>
+            
+            <div class="page" id="page-2">
+                <img src="img/foto3.jpg" alt="Foto Kita" class="page-photo">
+                <div class="page-text">Aku mau minta maaf kalau tadi aku kayak kucing kesetrum ⚡ Aku nggak sengaja bikin kamu kesel.</div>
+            </div>
+            
+            <div class="page" id="page-3">
+                <img src="img/foto4.jpg" alt="Foto Kita" class="page-photo">
+                <div class="page-text">Kamu tahu kan, kadang otakku suka error kaya WiFi lemot... Tapi percayalah, niatku selalu baik.</div>
+            </div>
+            
+            <div class="page" id="page-4">
+                <img src="img/foto5.jpg" alt="Foto Kita" class="page-photo">
+                <div class="page-text">Tapi hatiku selalu full signal buat kamu 💖 Nggak ada yang bisa ngeganggu frekuensi cintaku ke kamu.</div>
+                <div class="hearts">♥ ♥ ♥</div>
+            </div>
+            
+            <div class="page" id="page-5">
+                <img src="img/foto6.jpg" alt="Foto Kita" class="page-photo">
+                <div class="page-text">Kamu tuh kayak stiker favorit di WA aku. Setiap liat kamu, langsung pengen save terus di hati.</div>
+            </div>
+            
+            <div class="page" id="page-6">
+                <img src="img/foto7.jpg" alt="Foto Kita" class="page-photo">
+                <div class="page-text">Selalu bikin chat kita special dan pengen aku koleksi terus 🥰 Kayak chat pertama kita yang sampai sekarang masih aku screenshot.</div>
+            </div>
+            
+            <div class="page" id="page-7">
+                <img src="img/foto8.jpg" alt="Foto Kita" class="page-photo">
+                <div class="page-text">Aku janji bakal lebih perhatian, nggak kayak baterai HP yang cepet lowbat 🔋 Aku bakal charge terus rasa sayangku buat kamu.</div>
+            </div>
+            
+            <!-- Halaman penutup -->
+            <div class="page" id="page-8">
+                <img src="img/foto9.jpg" alt="Foto Kita" class="page-photo">
+                <div class="hearts">♥ ♥ ♥</div>
+                <div class="page-text">Makasih ya udah mau nerima aku apa adanya. Aku sayang banget sama kamu!</div>
+                <div class="signature">Dari pacarmu yang kadang cupu tapi selalu cinta ❤️</div>
+            </div>
+            
+            <div class="nav-buttons" id="nav-buttons">
+                <button class="nav-btn" id="prev-btn" disabled><i class="fas fa-arrow-left"></i></button>
+                <button class="nav-btn" id="next-btn"><i class="fas fa-arrow-right"></i></button>
+            </div>
+            <div class="page-indicator" id="page-indicator">1/9</div>
         </div>
-        <div id="nota" class="nota" style="display: none;"></div>
-        <button class="bayar-btn" onclick="bayar()">Bayar</button>
+        
+        <div class="music-control" id="music-control">
+            <i class="fas fa-music"></i>
+        </div>
     </div>
+
     <script>
-        document.getElementById('pesanForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Mencegah halaman di-refresh
-            var form = event.target;
-
-            var formData = new FormData(form);
-            var data = {};
-            formData.forEach((value, key) => {
-                data[key] = value;
-            });
-
-            // Simpan data ke localStorage sebagai simulasi pengiriman
-            localStorage.setItem('pesananTerakhir', JSON.stringify(data));
-
-            // Menampilkan nota
-            tampilkanNota(data);
-
-            alert('Pesanan Anda berhasil dikirim silahkan bayar dibawah'); // Menampilkan pesan sukses
-            // location.reload(); // Memuat ulang halaman setelah pesan berhasil dikirim
+        const envelope = document.getElementById('envelope');
+        const letter = document.getElementById('letter');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const pageIndicator = document.getElementById('page-indicator');
+        const musicControl = document.getElementById('music-control');
+        const pages = document.querySelectorAll('.page');
+        const container = document.querySelector('.container');
+        
+        // Audio element
+        const bgMusic = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+        bgMusic.loop = true;
+        let isMusicPlaying = false;
+        
+        // Inisialisasi halaman
+        let currentPage = 0;
+        const totalPages = pages.length;
+        
+        // Fungsi untuk membuat animasi love
+        function createHearts() {
+            const heart = document.createElement('div');
+            heart.classList.add('love');
+            heart.innerHTML = '♥';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+            container.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+        
+        // Fungsi untuk update halaman
+        function updatePage() {
+            // Sembunyikan semua halaman
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Tampilkan halaman saat ini
+            pages[currentPage].classList.add('active');
+            
+            // Update tombol navigasi
+            prevBtn.disabled = currentPage === 0;
+            nextBtn.disabled = currentPage === totalPages - 1;
+            
+            // Update page indicator
+            pageIndicator.textContent = `${currentPage + 1}/${totalPages}`;
+        }
+        
+        // Event listeners untuk navigasi
+        nextBtn.addEventListener('click', () => {
+            if (currentPage < totalPages - 1) {
+                currentPage++;
+                updatePage();
+            }
+        });
+        
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 0) {
+                currentPage--;
+                updatePage();
+            }
+        });
+        
+        // Music control
+        musicControl.addEventListener('click', () => {
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                musicControl.innerHTML = '<i class="fas fa-music"></i>';
+            } else {
+                bgMusic.play();
+                musicControl.innerHTML = '<i class="fas fa-pause"></i>';
+            }
+            isMusicPlaying = !isMusicPlaying;
+        });
+        
+        envelope.addEventListener('click', function() {
+            // Buka amplop
+            this.classList.add('open');
+            
+            // Tampilkan animasi love
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    createHearts();
+                }, i * 100);
+            }
+            
+            // Tampilkan surat setelah 0.5 detik
+            setTimeout(() => {
+                letter.classList.add('show');
+                
+                // Mulai musik
+                setTimeout(() => {
+                    musicControl.classList.add('active');
+                    bgMusic.play();
+                    isMusicPlaying = true;
+                    musicControl.innerHTML = '<i class="fas fa-pause"></i>';
+                }, 1000);
+                
+                // Tampilkan halaman pertama
+                updatePage();
+                
+            }, 500);
+        });
+        
+        // Navigasi dengan keyboard
+        document.addEventListener('keydown', (e) => {
+            if (!letter.classList.contains('show')) return;
+            
+            if (e.key === 'ArrowRight') {
+                nextBtn.click();
+            } else if (e.key === 'ArrowLeft') {
+                prevBtn.click();
+            }
         });
 
-        function tampilkanNota(data) {
-            const hargaMakanan = {
-                'Nasi Goreng': 20000,
-                'Mie Ayam': 15000,
-                'Ayam Penyet': 25000,
-                'Ayam Bakar': 25000,
-                'Mie Goreng': 20000,
-                'Mie Rebus': 10000,
-                'Kwetiaw Siram': 20000
+        // Handle error gambar
+        document.querySelectorAll('.page-photo').forEach(photo => {
+            photo.onerror = function() {
+                this.src = "img/default.jpg"; // Fallback image jika gambar tidak ditemukan
+                console.error("Gambar tidak ditemukan: ", this.src);
             };
-
-            const hargaMinuman = {
-                'Teh Obeng': 5000,
-                'Teh O': 5000,
-                'Jeruk Dingin': 7000,
-                'Jeruk Panas': 7000,
-                'Jus Alpukat': 15000,
-                'Jus Wortel': 15000,
-                'Sanford': 5000
-            };
-
-            var notaDiv = document.getElementById('nota');
-            var totalHarga = (hargaMakanan[data.makanan] * data.jumlah_makanan) + (hargaMinuman[data.minuman] * data.jumlah_minuman);
-
-            notaDiv.innerHTML = `
-                <h2>Nota Pesanan</h2>
-                <p><strong>Nama:</strong> ${data.nama}</p>
-                <p><strong>No. Hp:</strong> ${data.no_hp}</p>
-                <p><strong>Email:</strong> ${data.email}</p>
-                <p><strong>Alamat Pengiriman:</strong> ${data.alamat_pengiriman}</p>
-                <p><strong>Makanan:</strong> ${data.makanan} x ${data.jumlah_makanan} (Rp ${hargaMakanan[data.makanan]})</p>
-                <p><strong>Minuman:</strong> ${data.minuman} x ${data.jumlah_minuman} (Rp ${hargaMinuman[data.minuman]})</p>
-                <p><strong>Keterangan Pesanan:</strong> ${data.keterangan_pesanan}</p>
-                <p><strong>Metode Pembayaran:</strong> ${data.pembayaran}</p>
-                <p><strong>Total Harga:</strong> Rp ${totalHarga}</p>
-            `;
-            notaDiv.style.display = 'block';
-        }
-
-        function bayar() {
-        // Logika pembayaran dapat ditambahkan di sini
-        alert('Terima kasih! Pembayaran Anda telah diterima.');
-        location.reload(); // Memuat ulang halaman setelah pembayaran
-    }
-
-        // Jika ingin menampilkan pesanan terakhir
-        document.addEventListener('DOMContentLoaded', function() {
-            var pesananTerakhir = localStorage.getItem('pesananTerakhir');
-            if (pesananTerakhir) {
-                console.log('Pesanan Terakhir:', JSON.parse(pesananTerakhir));
-            }
         });
     </script>
 </body>
